@@ -30,15 +30,32 @@
 				<div class="map"></div>
 			</div>
 
+			<div class="jumbotron">
+				<div class="js-scroll scrollto">
+
+
+				</div>
+			</div>
+
 		</div>
 
 
 		
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.scrollTo.js"></script>
 		<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script src="js/gmap3.min.js"></script>
+		<script src="js/markers.js"></script>
 		<script src="js/main.js"></script>
 		<script src="js/database.js"></script>
+
+		<script>
+					
+					for( i in markers ) {
+						console.log(markers[i]);
+						$( ".js-scroll" ).append( "<article class='js-marker-" + markers[i].data.id + "''><h2>" + markers[i].data.name + "</h2></article>" );
+					}
+		</script>
 	</body>
 </html>
