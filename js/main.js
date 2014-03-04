@@ -22,10 +22,11 @@ Proto.Map.addMarkersClustering = function( markerList, markerIcon, clusters ) {
       options: {
           icon: markerIcon
       },
+      // tag: markerList.data.tag
       events: {
         click: function( marker, event, data ) {
           $( '.js-scroll' ).scrollTo( '.js-marker-' + data.data.id , 200 );
-          console.log(data.data.id);
+          console.log(marker);
           // var content = Feis.Map.setContent( data );
           // var map = $( this ).gmap3( 'get' );
           // infowindow = $( this ).gmap3( { action:'get' , name:'infowindow' } );
@@ -203,15 +204,66 @@ Proto.Map.clearThat = function() {
 
 Proto.Map.clearMarkersByTag = function( tag ) {
 
-  console.log('here');
+  console.log( $( this ).attr( 'id' ) );
 
-  Proto.gmap.gmap3( {
-    clear: {
-      tag: tag
+  var markers = $( ".map" ).gmap3( {
+    get: { 
+      name: 'markers',
+      tag: $( this ).attr( 'id' )
     }
   } );
+
+    console.log( 'marker' );
+    console.log( markers );
+
+    // if(marker.id == markerId){marker.setVisible(false);}
+
+  
+
+  // Proto.gmap.gmap3( {
+  //   clear: {
+  //     tag: $( this ).attr( 'id' )
+  //   }
+  // } );
   
 };
+
+
+Proto.Map.userGeoloc = function( ) {
+
+  function success(position) {
+    console.log(position);
+    
+   
+    var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var myOptions = {
+      zoom: 15,
+      center: latlng,
+      mapTypeControl: false,
+      navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+    
+    var marker = new google.maps.Marker({
+        position: latlng, 
+        map: map, 
+        title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
+    });
+  }
+
+  function error( msg ) {    
+    console.log(msg);
+  }
+
+  if( navigator.geolocation ) {
+    navigator.geolocation.getCurrentPosition( success, error );
+  } else {
+    error('not supported');
+  }
+}
+
+
 
 Proto.Map.init = function( ) {
 
@@ -233,11 +285,15 @@ Proto.Map.init = function( ) {
     }
 
   } );
+  
   Proto.Map.initMarkers();
+
+  Proto.Map.userGeoloc();
 
   $( '.js-default' ).bind( 'click', Proto.Map.init );
   $( '.js-clear' ).bind( 'click', Proto.Map.clearThat );
   $( '.js-toggleCluster' ).bind( 'click', Proto.Map.toggleCluster );
+  $( '.js-tag' ).bind( 'click', Proto.Map.clearMarkersByTag );
 
 };
 
