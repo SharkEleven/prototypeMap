@@ -263,6 +263,34 @@ Proto.Map.userGeoloc = function( ) {
   }
 }
 
+$( '#subUserZip' ).on( 'click' , function( ) {
+
+    var userZip = $( '.js-zipValue' ).val();
+
+    console.log( userZip );
+
+    $('.map').gmap3({
+      getlatlng:{
+        address:  userZip,
+        callback: function( results ){
+          
+          if( results ) {
+            console.log(results);
+            $( '.map' ).gmap3( {
+              marker:{
+                latLng:results[0].geometry.location
+              }
+            } );
+            $(this).gmap3("get").setCenter(results[0].geometry.location);
+          } else {
+            console.log('error');
+          }
+        }
+      }
+    } );
+
+  } );
+
 
 
 Proto.Map.init = function( ) {
