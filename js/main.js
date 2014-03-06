@@ -295,24 +295,62 @@ $( '#subUserZip' ).on( 'click' , function( ) {
 
 Proto.Map.init = function( ) {
 
-  Proto.gmap = $( ".map" ).gmap3( {
-    map:{
-      options:{
-      center:[ 48.4459605 , -73.7159174 ],
-      zoom: 4,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    },
-    events:{
-      zoom_changed: function( map ) {
-        // Proto.Map.appendMarkers( map.getZoom() );
-      }
-    },
-      callback: function( map ) {
-        // Proto.Map.appendMarkers( map.getZoom() );
-      }
+  var styles = [
+    {
+      stylers: [
+        { hue: "#00ffe6" },
+        { saturation: -20 }
+      ]
+    },{
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [
+        { lightness: 100 },
+        { visibility: "simplified" }
+      ]
+    },{
+      featureType: "road",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
     }
+  ];
 
-  } );
+  var styledMap = new google.maps.StyledMapType( styles, { name: "Styled Map" } );
+
+  // Proto.gmap = $( ".map" ).gmap3( {
+  //   map:{
+  //     options:{
+  //     center:[ 48.4459605 , -73.7159174 ],
+  //     zoom: 4,
+  //     mapTypeId: google.maps.MapTypeId.ROADMAP,
+  //   },
+  //   events:{
+  //     zoom_changed: function( map ) {
+  //       // Proto.Map.appendMarkers( map.getZoom() );
+  //     }
+  //   },
+  //     callback: function( map ) {
+  //       // Proto.Map.appendMarkers( map.getZoom() );
+  //     }
+  //   }
+
+    var mapOptions = {
+      zoom: 11,
+      center: new google.maps.LatLng(55.6468, 37.581),
+      mapTypeControlOptions: {
+        mapTypeIds: [ google.maps.MapTypeId.ROADMAP, 'map_style' ]
+      }
+    };
+
+    Proto.gmap = new google.maps.Map( document.getElementById( 'map-canvas' ), mapOptions );
+
+  // } );
+
+  Proto.gmap.mapTypes.set( 'map_style', styledMap );
+  Proto.gmap.setMapTypeId( 'map_style' );
+
   
   Proto.Map.initMarkers();
 
