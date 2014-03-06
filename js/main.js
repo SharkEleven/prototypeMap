@@ -319,38 +319,79 @@ Proto.Map.init = function( ) {
 
   var styledMap = new google.maps.StyledMapType( styles, { name: "Styled Map" } );
 
-  // Proto.gmap = $( ".map" ).gmap3( {
-  //   map:{
-  //     options:{
-  //     center:[ 48.4459605 , -73.7159174 ],
-  //     zoom: 4,
-  //     mapTypeId: google.maps.MapTypeId.ROADMAP,
-  //   },
-  //   events:{
-  //     zoom_changed: function( map ) {
-  //       // Proto.Map.appendMarkers( map.getZoom() );
-  //     }
-  //   },
-  //     callback: function( map ) {
-  //       // Proto.Map.appendMarkers( map.getZoom() );
-  //     }
-  //   }
+  Proto.gmap = $( ".map" ).gmap3( {
+    map:{
+      options:{
+        center:[ 48.4459605 , -73.7159174 ],
+        zoom: 4,
+        mapTypeId: "style1",
+        mapTypeControlOptions: {
+           mapTypeIds: [google.maps.MapTypeId.ROADMAP, "style1", "style2"]
+        }
+      },
+      events:{
+        zoom_changed: function( map ) {
+          // Proto.Map.appendMarkers( map.getZoom() );
+        }
+      },
+        callback: function( map ) {
+          // Proto.Map.appendMarkers( map.getZoom() );
+        }
+    },
+    styledmaptype:{
+      id: "style1",
+      options:{
+        name: "Style 1"
+      },
+      styles: [
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [
+            { hue: "#0000000" },
+            { saturation: 90 },
+            { lightness: -20 }
+          ]
+        }
+      ]
+    },
+    // styledmaptype:{
+    //   id: "style2",
+    //   options:{
+    //     name: "Style 2"
+    //   },
+    //   styles: [
+    //     {
+    //       featureType: "road.highway",
+    //       elementType: "geometry",
+    //       stylers: [
+    //         { hue: "red" },
+    //         { saturation: 60 },
+    //         { lightness: -20 }
+    //       ]
+    //     },{
+    //       featureType: "road.arterial",
+    //       elementType: "all",
+    //       stylers: [
+    //         { hue: "black" },
+    //         { lightness: -40 },
+    //         { visibility: "simplified" },
+    //         { saturation: 30 }
+    //       ]
+    //     },{
+    //       featureType: "road.local",
+    //       elementType: "all",
+    //       stylers: [
+    //         { hue: "blue" },
+    //         { saturation: 50 },
+    //         { gamma: 0.7 },
+    //         { visibility: "simplified" }
+    //       ]
+    //     }
+    //   ]
+    // }
 
-    var mapOptions = {
-      zoom: 11,
-      center: new google.maps.LatLng(55.6468, 37.581),
-      mapTypeControlOptions: {
-        mapTypeIds: [ google.maps.MapTypeId.ROADMAP, 'map_style' ]
-      }
-    };
-
-    Proto.gmap = new google.maps.Map( document.getElementById( 'map-canvas' ), mapOptions );
-
-  // } );
-
-  Proto.gmap.mapTypes.set( 'map_style', styledMap );
-  Proto.gmap.setMapTypeId( 'map_style' );
-
+  } );
   
   Proto.Map.initMarkers();
 
@@ -362,6 +403,9 @@ Proto.Map.init = function( ) {
   $( '.js-tag' ).bind( 'click', Proto.Map.clearMarkersByTag );
 
 };
+
+
+
 
 
 
