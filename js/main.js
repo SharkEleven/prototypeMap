@@ -324,7 +324,7 @@ Proto.Map.init = function( ) {
       options:{
         center:[ 48.4459605 , -73.7159174 ],
         zoom: 4,
-        mapTypeId: "style1",
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
         mapTypeControlOptions: {
            mapTypeIds: [google.maps.MapTypeId.ROADMAP, "style1", "style2"]
         }
@@ -390,6 +390,19 @@ Proto.Map.init = function( ) {
     //     }
     //   ]
     // }
+    kmllayer:{
+      options:{
+        url: "http://bbs.keyhole.com/ubb/ubbthreads.php?ubb=download&Number=796978&filename=R%C3%A9gions%20administratives%20du%20Qu%C3%A9bec.kmz",
+        opts:{
+          suppressInfoWindows: true
+        }
+      },
+      events:{
+        click: function(kml, event){
+          alert(event.featureData.description);
+        }
+      }
+    }
 
   } );
   
