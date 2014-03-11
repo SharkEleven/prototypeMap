@@ -207,7 +207,7 @@ Proto.Map.clearMarkersByTag = function( tag ) {
   console.log( $( this ).attr( 'id' ) );
 
   var markers = $( ".map" ).gmap3( {
-    get: { 
+    get: {
       name: 'markers',
       tag: $( this ).attr( 'id' )
     }
@@ -218,14 +218,14 @@ Proto.Map.clearMarkersByTag = function( tag ) {
 
     // if(marker.id == markerId){marker.setVisible(false);}
 
-  
+
 
   // Proto.gmap.gmap3( {
   //   clear: {
   //     tag: $( this ).attr( 'id' )
   //   }
   // } );
-  
+
 };
 
 
@@ -233,8 +233,8 @@ Proto.Map.userGeoloc = function( ) {
 
   function success(position) {
     console.log(position);
-    
-   
+
+
     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     var myOptions = {
       zoom: 15,
@@ -244,15 +244,15 @@ Proto.Map.userGeoloc = function( ) {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
-    
+
     var marker = new google.maps.Marker({
-        position: latlng, 
-        map: map, 
+        position: latlng,
+        map: map,
         title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
     });
   }
 
-  function error( msg ) {    
+  function error( msg ) {
     console.log(msg);
   }
 
@@ -273,7 +273,7 @@ $( '#subUserZip' ).on( 'click' , function( ) {
       getlatlng:{
         address:  userZip,
         callback: function( results ){
-          
+
           if( results ) {
             console.log(results);
             $( '.map' ).gmap3( {
@@ -322,11 +322,16 @@ Proto.Map.init = function( ) {
   Proto.gmap = $( ".map" ).gmap3( {
     map:{
       options:{
+        zoomControl: false,
+        panControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        mapTypeControl: false,
         center:[ 48.4459605 , -73.7159174 ],
         zoom: 4,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: 'style1',
         mapTypeControlOptions: {
-           mapTypeIds: [google.maps.MapTypeId.ROADMAP, "style1", "style2"]
+           mapTypeIds: [ "style1"]
         }
       },
       events:{
@@ -405,7 +410,7 @@ Proto.Map.init = function( ) {
     }
 
   } );
-  
+
   Proto.Map.initMarkers();
 
   Proto.Map.userGeoloc();
